@@ -31,12 +31,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         for(Movimentacao movimentacao: movimentacoes) {
             total += movimentacao.getValor();
         }
-        saldoLabel.setText(this.formatarDinheiro(total));
+        saldoLabel.setText("R$ " + this.formatarDinheiro(total));
     }
     
     private String formatarDinheiro(double valor) {
         DecimalFormat df = new DecimalFormat();
-        df.applyPattern("R$ #,##0.00");
+        df.applyPattern("#,##0.00");
         return df.format(valor);
     }
     
@@ -57,12 +57,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         descricaoTextField = new javax.swing.JTextField();
-        adicionarButton = new javax.swing.JButton();
+        receitaButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
         removerButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         saldoLabel = new javax.swing.JLabel();
+        despesaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,10 +71,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jLabel2.setText("Descrição:");
 
-        adicionarButton.setText("Adicionar");
-        adicionarButton.addActionListener(new java.awt.event.ActionListener() {
+        receitaButton.setText("Receita");
+        receitaButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adicionarButtonActionPerformed(evt);
+                receitaButtonActionPerformed(evt);
             }
         });
 
@@ -104,6 +105,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
         saldoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         saldoLabel.setText("R$ 0.00");
 
+        despesaButton.setText("Despesa");
+        despesaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                despesaButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -113,6 +121,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
+                    .addComponent(saldoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -122,11 +131,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(descricaoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(adicionarButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(removerButton))
-                    .addComponent(saldoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(receitaButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(despesaButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(252, 252, 252)
+                .addComponent(removerButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,28 +150,30 @@ public class TelaPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(descricaoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(adicionarButton)
-                    .addComponent(removerButton))
+                    .addComponent(receitaButton)
+                    .addComponent(despesaButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(removerButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(saldoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void adicionarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarButtonActionPerformed
+    private void receitaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receitaButtonActionPerformed
         Movimentacao movimentacao = new Movimentacao();
         movimentacao.setValor(Double.parseDouble(valorTextField.getText()));
         movimentacao.setDescricao(descricaoTextField.getText());
         movimentacoes.add(movimentacao);
-        lista.addElement(movimentacao.getDescricao() + ": " + this.formatarDinheiro(movimentacao.getValor()));
+        lista.addElement(movimentacao.getDescricao() + ": R$ " + this.formatarDinheiro(movimentacao.getValor()));
         this.calcularTotal();
-    }//GEN-LAST:event_adicionarButtonActionPerformed
+    }//GEN-LAST:event_receitaButtonActionPerformed
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
         // TODO add your handling code here:
@@ -173,6 +188,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         movimentacoes.remove(selecionado);
         this.calcularTotal();
     }//GEN-LAST:event_removerButtonActionPerformed
+
+    private void despesaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_despesaButtonActionPerformed
+        Movimentacao movimentacao = new Movimentacao();
+        movimentacao.setValor(Double.parseDouble("-" + valorTextField.getText()));
+        movimentacao.setDescricao(descricaoTextField.getText());
+        movimentacoes.add(movimentacao);
+        lista.addElement(movimentacao.getDescricao() + ": R$ " + this.formatarDinheiro(movimentacao.getValor()));
+        this.calcularTotal();
+    }//GEN-LAST:event_despesaButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,13 +234,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton adicionarButton;
     private javax.swing.JTextField descricaoTextField;
+    private javax.swing.JButton despesaButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton receitaButton;
     private javax.swing.JButton removerButton;
     private javax.swing.JLabel saldoLabel;
     private javax.swing.JTextField valorTextField;
