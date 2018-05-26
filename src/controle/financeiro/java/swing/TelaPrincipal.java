@@ -22,13 +22,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     
     public TelaPrincipal() {
         lista = new DefaultListModel();
-        movimentacoes = new ArrayList();
-        initComponents();       
+        movimentacoes = new ArrayList<Movimentacao>();
+        initComponents();  
+        this.getMovimentacoes();
     }
     
     private void calcularTotal() {
         double total = 0;
-        for(Movimentacao movimentacao: movimentacoes) {
+        for(Movimentacao movimentacao: this.movimentacoes) {
             total += movimentacao.getValor();
         }
         saldoLabel.setText("R$ " + this.formatarDinheiro(total));
@@ -40,8 +41,19 @@ public class TelaPrincipal extends javax.swing.JFrame {
         return df.format(valor);
     }
     
-    private void getMovimentacao() {
-        
+    private void adicionarNoBanco(Movimentacao movimentacao) {
+        MovimentacaoDao dao = new MovimentacaoDao();
+        dao.persist(movimentacao);
+    }
+    
+    private void getMovimentacoes() {
+        List<Movimentacao> movimentacoes = new MovimentacaoDao().findAll();
+        lista.removeAllElements();
+        for(Movimentacao movimentacao: movimentacoes) {
+            this.movimentacoes.add(movimentacao);
+            lista.addElement(movimentacao.getDescricao() + ": R$ " + this.formatarDinheiro(movimentacao.getValor()));
+        }
+        this.calcularTotal();
     }
 
     /**
@@ -173,6 +185,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         movimentacoes.add(movimentacao);
         lista.addElement(movimentacao.getDescricao() + ": R$ " + this.formatarDinheiro(movimentacao.getValor()));
         this.calcularTotal();
+        this.adicionarNoBanco(movimentacao);
     }//GEN-LAST:event_receitaButtonActionPerformed
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
@@ -185,6 +198,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerButtonActionPerformed
         lista.remove(selecionado);
+        MovimentacaoDao movimentacaoDao = new MovimentacaoDao();
+        movimentacaoDao.remove(movimentacoes.get(selecionado).getId());
         movimentacoes.remove(selecionado);
         this.calcularTotal();
     }//GEN-LAST:event_removerButtonActionPerformed
@@ -196,6 +211,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         movimentacoes.add(movimentacao);
         lista.addElement(movimentacao.getDescricao() + ": R$ " + this.formatarDinheiro(movimentacao.getValor()));
         this.calcularTotal();
+        this.adicionarNoBanco(movimentacao);
     }//GEN-LAST:event_despesaButtonActionPerformed
 
     /**

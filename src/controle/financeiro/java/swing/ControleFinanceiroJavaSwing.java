@@ -5,6 +5,8 @@
  */
 package controle.financeiro.java.swing;
 
+import java.util.List;
+
 /**
  *
  * @author wellingtonsouza
